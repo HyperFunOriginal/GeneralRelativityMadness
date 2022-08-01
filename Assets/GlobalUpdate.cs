@@ -25,19 +25,19 @@ public class GlobalUpdate : MonoBehaviour
             DistanceForce = NewtonianGravAndRepulsionFlat;
         }
     }
-
     (Vector4, Vector4, bool) GetPositionAtSingleTime(Object target, Object thisObj, Tetrad frame)
     {
         Vector4 time = frame.CoordToFrame(target.worldLine.positions[0] - thisObj.spaceTimePos);
         Vector4 v1 = frame.CoordToFrame(target.worldLine.velocities[0] - thisObj.spacetimeVel);
-        for (int i = 0; i < target.worldLine.positions.Count - 1; i++)
+        int maximum = target.worldLine.positions.Count;
+        for (int i = 1; i < maximum; i += (maximum - i) / 16 + 1)
         {
-            Vector4 newTime = frame.CoordToFrame(target.worldLine.positions[i + 1] - thisObj.spaceTimePos);
-            Vector4 v2 = frame.CoordToFrame(target.worldLine.velocities[i + 1] - thisObj.spacetimeVel);
+            Vector4 newTime = frame.CoordToFrame(target.worldLine.positions[i] - thisObj.spaceTimePos);
+            Vector4 v2 = frame.CoordToFrame(target.worldLine.velocities[i] - thisObj.spacetimeVel);
             if (newTime.w > 0f)
             {
                 float lerp = InverseLerp(0f, time.w, newTime.w);
-                return (Vector4.Lerp(time, newTime, lerp), Vector4.Lerp(v1, v2, lerp), thisObj.currentSpace.absLen(Vector4.Lerp(time, newTime, lerp)) > maxTolerance);
+                return (Vector4.LerpUnclamped(time, newTime, lerp), Vector4.LerpUnclamped(v1, v2, lerp), Tetrad.Minkowskian.absLen(Vector4.LerpUnclamped(time, newTime, lerp)) > maxTolerance);
             }
             time = newTime;
             v1 = v2;
@@ -46,15 +46,35 @@ public class GlobalUpdate : MonoBehaviour
         float newLerp = InverseLerp(0f, time.w, finalTime.w);
         return (Vector4.LerpUnclamped(time, finalTime, newLerp), Vector4.LerpUnclamped(v1, frame.CoordToFrame(target.spacetimeVel - thisObj.spacetimeVel), newLerp), Tetrad.Minkowskian.absLen(Vector4.LerpUnclamped(time, finalTime, newLerp)) > maxTolerance);
     }
-
+    (float, bool) TimeSinceLastCausalConnection(Object target, Object thisObj, Tetrad frame)
+    {
+        Vector4 time = frame.CoordToFrame(target.worldLine.positions[0] - thisObj.spaceTimePos);
+        float timeFactor = time.w + ((Vector3)time).magnitude;
+        int maximum = target.worldLine.positions.Count;
+        for (int i = 1; i < maximum; i += (maximum - i) / 16 + 1)
+        {
+            Vector4 newTime = frame.CoordToFrame(target.worldLine.positions[i] - thisObj.spaceTimePos);
+            float newTimeFactor = newTime.w + ((Vector3)newTime).magnitude;
+            if (newTimeFactor > 0f)
+            {
+                float lerp = InverseLerp(0f, timeFactor, newTimeFactor);
+                return (Mathf.LerpUnclamped(time.w, newTime.w, lerp), Tetrad.Minkowskian.absLen(Vector4.LerpUnclamped(time, newTime, lerp)) > maxTolerance);
+            }
+            time = newTime;
+            timeFactor = newTimeFactor;
+        }
+        Vector4 finalTime = frame.CoordToFrame(target.spaceTimePos - thisObj.spaceTimePos);
+        float newLerp = InverseLerp(0f, timeFactor, finalTime.w + ((Vector3)finalTime).magnitude);
+        return (Mathf.LerpUnclamped(time.w, finalTime.w, newLerp), Tetrad.Minkowskian.absLen(Vector4.LerpUnclamped(time, finalTime, newLerp)) > maxTolerance);
+    }
     Vector4 NewtonianGravAndRepulsion(Vector3 del)
     {
-        float constant = 1f / (.1f + maxTolerance * maxTolerance) - .5f / (maxTolerance * maxTolerance * maxTolerance);
-        return del * (1f / (.1f + del.sqrMagnitude) - constant - .5f / (del.sqrMagnitude * del.magnitude)) * 3f;
+        float constant = 1f / (.1f + maxTolerance * maxTolerance) - .5f / Mathf.Max(0.007f, maxTolerance * maxTolerance * maxTolerance - 0.1f);
+        return del * (1f / (.1f + del.sqrMagnitude) - constant - .5f / Mathf.Max(0.007f, del.sqrMagnitude * del.magnitude - 0.1f)) * 3f;
     }
     Vector4 NewtonianGravAndRepulsionFlat(Vector3 del)
     {
-        return del * (1f / (del.sqrMagnitude * del.magnitude) - 1f / (del.sqrMagnitude * del.sqrMagnitude)) * 10f;
+        return del * (1f / (del.sqrMagnitude * del.magnitude) - 1f / (del.sqrMagnitude * del.sqrMagnitude)) * 5f;
     }
     Vector4 Damping(Vector3 del, Vector4 vel)
     {
@@ -85,7 +105,8 @@ public class GlobalUpdate : MonoBehaviour
                     continue;
                 Vector4 dist = DistanceForce.Invoke(data.Item1);
                 Vector4 vel = VelocityForce.Invoke(data.Item1, data.Item2);
-                a.spacetimeAcc += a.CurrFrame.FrameToCoord(vel + dist);
+                Vector4 force = curr.FrameToCoord(vel + dist);
+                a.spacetimeAcc += force;
             }
         }
     }

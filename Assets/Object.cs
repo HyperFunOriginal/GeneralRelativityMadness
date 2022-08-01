@@ -116,9 +116,9 @@ public class Object : MonoBehaviour
             spacetimeVel.z *= speedMul;
         }
 
-        if (frameCount > 4)
+        if (frameCount > 8)
         {
-            frameCount = 0;
+            frameCount = Random.Range(-2, 2);
             worldLine.Append(spaceTimePos, spacetimeVel);
         }
         frameCount++;
@@ -230,10 +230,10 @@ public struct WorldLine
             velocities = new List<Vector4>();
         positions.Add(position);
         velocities.Add(velocity);
-        if (positions.Count > 64)
+        if (positions.Count > 128)
         {
-            positions.RemoveRange(0, positions.Count - 64);
-            velocities.RemoveRange(0, velocities.Count - 64);
+            positions.RemoveRange(0, positions.Count - 128);
+            velocities.RemoveRange(0, velocities.Count - 128);
         }
     }
 }
