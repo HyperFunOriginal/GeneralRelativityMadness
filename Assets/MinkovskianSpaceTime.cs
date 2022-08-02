@@ -7,6 +7,10 @@ using UnityEngine;
 /// </summary>
 public abstract class Spacetime : MonoBehaviour
 {
+    /// <summary>
+    /// Always set to true unless causality paradoxes are to be permitted.
+    /// </summary>
+    public bool banParadoxes = true;
     public GameObject tickmark;
     public float speedOfLight;
     public float timestep;
@@ -23,7 +27,10 @@ public abstract class Spacetime : MonoBehaviour
     public abstract Metric GetMetric(Vector4 spaceTime);
     public abstract Vector4 FromCoordSystem(Vector4 coordSpace);
     public abstract Vector3 FromCoordSystemCart(Vector4 coordSpace);
-    private void LateUpdate()
+    /// <summary>
+    /// Must <b>always<\b> be called in LateUpdate() or an implementation of it. Will break the simulation otherwise.
+    /// </summary>
+    internal virtual void LateUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Space))
             paused = !paused;

@@ -52,7 +52,10 @@ public class Object : MonoBehaviour
         Gizmos.color = Color.HSVToRGB(Mathf.Abs(zBasis.w / global.speedOfLight + 50f) % 1f, 1f, .7f);
         Gizmos.DrawRay(transform.position - (Vector3)zBasis, 2f * zBasis);
     }
-    protected void MustStart()
+    /// <summary>
+    /// Must <b>always</b> be called! When overriding, must call base.Start() to avoid breaking the spacetime continuum.
+    /// </summary>
+    internal virtual void Start()
     {
         global = GetSpaceTime.spaceTime;
         properTime = 0f;
@@ -65,10 +68,6 @@ public class Object : MonoBehaviour
         worldLine = new WorldLine();
         worldLine.Append(spaceTimePos, spacetimeVel);
         infracCount = 0;
-    }
-    void Start()
-    {
-        MustStart();
     }
     void TempSpeed(Metric m)
     {
@@ -124,7 +123,7 @@ public class Object : MonoBehaviour
         frameCount++;
 
         TempSpeed(currentSpace);
-        if (currentSpace.sqLength(spacetimeVel) < 0f && !lightlike)
+        if (global.banParadoxes && currentSpace.sqLength(spacetimeVel) < 0f && !lightlike)
         {
             infracCount++;
             if (infracCount > 2)
@@ -245,7 +244,7 @@ public struct Tetrad
     public Vector4[] compCoordBasis;
     Matrix.NxNMatrix invMatrix;
 
-    public static readonly Metric Minkowskian = new Metric()
+    public static Metric Minkowskian => new Metric()
     {
         components = new float[4, 4] { { 1f, 0f, 0f, 0f },
                                            { 0f, -1f, 0f, 0f },

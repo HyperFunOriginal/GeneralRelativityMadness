@@ -536,13 +536,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686016252}
-  m_LocalRotation: {x: 0, y: 0.06104851, z: 0, w: 0.99813485}
-  m_LocalPosition: {x: -3.4, y: 2.6, z: -150.68}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.6, z: -61.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 7, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &686016254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -555,7 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e5a7dc9a3b61147810cd602086c0bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: 3, y: 0, z: 0, w: 0}
+  spacetimeVel: {x: 10, y: 0, z: 0, w: 0}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
@@ -958,7 +958,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763056373}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.4, y: 5.6, z: -0.3}
+  m_LocalPosition: {x: 26.2, y: 5.6, z: -0.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1039,12 +1039,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1342244622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 681ddac9731c9c246a8d97e35a0fe3ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 53f585da09d63fc42a2c4f9e122ce6e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tickmark: {fileID: 0}
   speedOfLight: 30
-  timestep: 1
+  timestep: 0.5
   schwarzschildRad: 10
   angularMomentum: 67400
   spinParam: 0.9985186

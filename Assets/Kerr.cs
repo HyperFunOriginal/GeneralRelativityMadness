@@ -107,8 +107,10 @@ public class Kerr : Spacetime
     private void Update()
     {
         spinParam = 2 * a / schwarzschildRad;
+        if (blackholeDisp == null)
+            return;
         blackholeDisp.SetActive(Mathf.Abs(spinParam) <= 1f);
-        if (blackholeDisp == null || Mathf.Abs(spinParam) > 1f)
+        if (Mathf.Abs(spinParam) > 1f)
             return;
         float rad = (schwarzschildRad + Mathf.Sqrt(schwarzschildRad * schwarzschildRad - 4 * a * a))/2f;
         float eq = FromCoordSystem(new Vector4(rad, Mathf.PI / 2f, 0f, 0f)).magnitude;

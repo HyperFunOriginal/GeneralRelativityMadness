@@ -12,10 +12,10 @@ public class LightEmitter : Object
     public bool radialLock;
     Quaternion q;
     
-    void Start()
+    new void Start()
     {
         q = Quaternion.FromToRotation(-transform.position.normalized, transform.forward);
-        MustStart();
+        base.Start();
         StartCoroutine(SlowUpdate());
     }
 
