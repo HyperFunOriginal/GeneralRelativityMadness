@@ -30,6 +30,8 @@ public class GlobalUpdate : MonoBehaviour
         Vector4 time = frame.CoordToFrame(target.worldLine.positions[0] - thisObj.spaceTimePos);
         Vector4 v1 = frame.CoordToFrame(target.worldLine.velocities[0] - thisObj.spacetimeVel);
         int maximum = target.worldLine.positions.Count;
+        if (maximum < 4)
+            return (Vector4.zero, Vector4.zero, true);
         for (int i = 1; i < maximum; i += (maximum - i) / 16 + 1)
         {
             Vector4 newTime = frame.CoordToFrame(target.worldLine.positions[i] - thisObj.spaceTimePos);
@@ -51,6 +53,8 @@ public class GlobalUpdate : MonoBehaviour
         Vector4 time = frame.CoordToFrame(target.worldLine.positions[0] - thisObj.spaceTimePos);
         float timeFactor = time.w + ((Vector3)time).magnitude;
         int maximum = target.worldLine.positions.Count;
+        if (maximum < 4)
+            return (0f, true);
         for (int i = 1; i < maximum; i += (maximum - i) / 16 + 1)
         {
             Vector4 newTime = frame.CoordToFrame(target.worldLine.positions[i] - thisObj.spaceTimePos);
