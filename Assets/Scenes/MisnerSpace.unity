@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111d4cf2080334b4da5004fa74a51a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: 0, y: 0, z: 0.1, w: 1}
+  spacetimeVel: {x: 0.0001, y: 0, z: 0.1, w: 1}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
-  spaceTimePos: {x: 0, y: 0, z: 0, w: -85}
+  spaceTimePos: {x: 0, y: 0, z: 0, w: -150}
   properTime: 0
   lightlike: 0
 --- !u!135 &211385649
@@ -262,9 +262,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111d4cf2080334b4da5004fa74a51a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: 0, y: 0, z: 0, w: 1}
+  spacetimeVel: {x: 0.001, y: 0, z: 0, w: 1}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
-  spaceTimePos: {x: 0, y: 0, z: 0, w: -85}
+  spaceTimePos: {x: 0, y: 0, z: 0, w: -150}
   properTime: 0
   lightlike: 0
 --- !u!135 &584217459
@@ -469,9 +469,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111d4cf2080334b4da5004fa74a51a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: -0.1, y: 0, z: 0.1, w: 1}
+  spacetimeVel: {x: -0.005, y: 0, z: 0.1, w: 1}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
-  spaceTimePos: {x: 0, y: 0, z: 0, w: -85}
+  spaceTimePos: {x: 0, y: 0, z: 0, w: -150}
   properTime: 0
   lightlike: 0
 --- !u!135 &1316776774
@@ -541,7 +541,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1316776772}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.94, y: 0.59, z: -11.6}
+  m_LocalPosition: {x: 415.5, y: 0.59, z: -11.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -667,9 +667,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329693b4bfd5a794091dc8e01ab78d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  banParadoxes: 0
   tickmark: {fileID: 0}
   speedOfLight: 3
-  timestep: 0.5
+  timestep: 0.1
 --- !u!4 &1578963881
 Transform:
   m_ObjectHideFlags: 0
@@ -716,9 +717,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111d4cf2080334b4da5004fa74a51a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: -0.1, y: 0, z: 0, w: 1}
+  spacetimeVel: {x: -0.005, y: 0, z: 0, w: 1}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
-  spaceTimePos: {x: 0, y: 0, z: 0, w: -85}
+  spaceTimePos: {x: 0, y: 0, z: 0, w: -150}
   properTime: 0
   lightlike: 0
 --- !u!135 &1833243556
@@ -788,7 +789,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1833243554}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.94, y: 0.59, z: -5.7}
+  m_LocalPosition: {x: 415.5, y: 0.59, z: -5.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

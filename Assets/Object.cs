@@ -74,6 +74,18 @@ public class Object : MonoBehaviour
     void TempSpeed(Metric m)
     {
         float[] newSpacetimeVel = new float[4] { spacetimeVel.w, spacetimeVel.x, spacetimeVel.y, spacetimeVel.z };
+        if (m.components[0,0] == 0)
+        {
+            float gr = 0f;
+            for (int i = 1; i < 4; i++)
+                gr += 2f * m.components[0, i] * newSpacetimeVel[i];
+            float cn = -global.sqC;
+            for (int i = 1; i < 4; i++)
+                for (int j = 1; j < 4; j++)
+                    cn += m.components[i, j] * newSpacetimeVel[i] * newSpacetimeVel[j];
+            spacetimeVel.w = -cn / gr;
+            return;
+        }
         float b = 0f;
         for (int i = 1; i < 4; i++)
             b += 2f * m.components[0, i] * newSpacetimeVel[i];
@@ -139,7 +151,7 @@ public class Object : MonoBehaviour
         }
         if (float.IsNaN(spaceTimePos.z))
             Destroy(gameObject);
-        properTimeStep = global.timestep / Mathf.Max(spacetimeVel.w, 1f);
+        properTimeStep = global.timestep / Mathf.Max(Mathf.Abs(spacetimeVel.w), 1f);
         return float.IsNaN(spaceTimePos.z);
     }
     internal void ProperClockTick()
@@ -170,7 +182,7 @@ public class Object : MonoBehaviour
         spacetimeVel += spacetimeAcc * properTimeStep;
         spacetimeAcc = Vector4.zero;
         bool insane = Sanity();
-        spaceTimePos += spacetimeVel * properTimeStep;
+        spaceTimePos = global.DelPositionCoords(spaceTimePos + spacetimeVel * properTimeStep);
         if (!lightlike)
         {
             properTime += properTimeStep;
