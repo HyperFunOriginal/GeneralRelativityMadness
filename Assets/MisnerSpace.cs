@@ -25,10 +25,6 @@ public class MisnerSpace : Spacetime
         spaceTime.x = 2f * Atanh(spaceTime.x / oldTime);
         return spaceTime;
     }
-    public override Vector4 DelPositionCoords(Vector4 del)
-    {
-        return new Vector4((del.x + 100f) % 1f, del.y, del.z, del.w);
-    }
     public override Vector4 ToCoordSystemVelocity(Vector4 spaceTimeVel, Vector4 cartesian)
     {
         Vector4 wBasis = (ToCoordSystem(new Vector4(cartesian.x, cartesian.y, cartesian.z, cartesian.w + 0.01f)) - ToCoordSystem(cartesian)) * 100f;

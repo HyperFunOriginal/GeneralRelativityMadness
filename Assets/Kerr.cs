@@ -96,10 +96,7 @@ public class Kerr : Spacetime
         Vector3 space = new Vector3(n * Mathf.Sin(coordSpace.y) * Mathf.Cos(coordSpace.z), coordSpace.x * Mathf.Cos(coordSpace.y), n * Mathf.Sin(coordSpace.y) * Mathf.Sin(coordSpace.z));
         return new Vector4(space.x, space.y, space.z, coordSpace.w);
     }
-    public override Vector4 DelPositionCoords(Vector4 del)
-    {
-        return new Vector4(del.x, del.y, (del.z + Mathf.PI * 101f) % (Mathf.PI * 2f) - Mathf.PI, del.w);
-    }
+    
     public override Vector3 FromCoordSystemCart(Vector4 coordSpace)
     {
         float n = Mathf.Sqrt(coordSpace.x * coordSpace.x + a * a);

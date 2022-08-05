@@ -9,7 +9,6 @@ public class GlobalUpdate : MonoBehaviour
     Object[] objs;
     Spacetime global;
     int frameCount = 0;
-    bool doneRelaxing;
     public Func<Vector3, Vector4> DistanceForce;
     public Func<Vector3, Vector4, Vector4> VelocityForce;
     // Start is called before the first frame update
@@ -19,7 +18,7 @@ public class GlobalUpdate : MonoBehaviour
         objs = FindObjectsOfType<Object>();
         DistanceForce = NewtonianGravAndRepulsion;
         VelocityForce = Damping;
-        doneRelaxing = false;
+
         if (global is MinkovskianSpaceTime)
         {
             maxTolerance = 10000f;
@@ -28,12 +27,14 @@ public class GlobalUpdate : MonoBehaviour
     }
     (Vector4, Vector4, bool) GetPositionAtSingleTime(Object target, Object thisObj, Tetrad frame)
     {
-        Vector4 time = frame.CoordToFrame(global.DelPositionCoords(target.worldLine.positions[0] - thisObj.spaceTimePos));
+        Vector4 time = frame.CoordToFrame(target.worldLine.positions[0] - thisObj.spaceTimePos);
         Vector4 v1 = frame.CoordToFrame(target.worldLine.velocities[0] - thisObj.spacetimeVel);
         int maximum = target.worldLine.positions.Count;
+        if (maximum < 4)
+            return (Vector4.zero, Vector4.zero, true);
         for (int i = 1; i < maximum; i += (maximum - i) / 16 + 1)
         {
-            Vector4 newTime = frame.CoordToFrame(global.DelPositionCoords(target.worldLine.positions[i] - thisObj.spaceTimePos));
+            Vector4 newTime = frame.CoordToFrame(target.worldLine.positions[i] - thisObj.spaceTimePos);
             Vector4 v2 = frame.CoordToFrame(target.worldLine.velocities[i] - thisObj.spacetimeVel);
             if (newTime.w > 0f)
             {
@@ -43,12 +44,33 @@ public class GlobalUpdate : MonoBehaviour
             time = newTime;
             v1 = v2;
         }
-        Vector4 finalTime = frame.CoordToFrame(global.DelPositionCoords(target.spaceTimePos - thisObj.spaceTimePos));
+        Vector4 finalTime = frame.CoordToFrame(target.spaceTimePos - thisObj.spaceTimePos);
         float newLerp = InverseLerp(0f, time.w, finalTime.w);
         return (Vector4.LerpUnclamped(time, finalTime, newLerp), Vector4.LerpUnclamped(v1, frame.CoordToFrame(target.spacetimeVel - thisObj.spacetimeVel), newLerp), Tetrad.Minkowskian.absLen(Vector4.LerpUnclamped(time, finalTime, newLerp)) > maxTolerance);
     }
-    
-    //Template Forces
+    (float, bool) TimeSinceLastCausalConnection(Object target, Object thisObj, Tetrad frame)
+    {
+        Vector4 time = frame.CoordToFrame(target.worldLine.positions[0] - thisObj.spaceTimePos);
+        float timeFactor = time.w + ((Vector3)time).magnitude;
+        int maximum = target.worldLine.positions.Count;
+        if (maximum < 4)
+            return (0f, true);
+        for (int i = 1; i < maximum; i += (maximum - i) / 16 + 1)
+        {
+            Vector4 newTime = frame.CoordToFrame(target.worldLine.positions[i] - thisObj.spaceTimePos);
+            float newTimeFactor = newTime.w + ((Vector3)newTime).magnitude;
+            if (newTimeFactor > 0f)
+            {
+                float lerp = InverseLerp(0f, timeFactor, newTimeFactor);
+                return (Mathf.LerpUnclamped(time.w, newTime.w, lerp), Tetrad.Minkowskian.absLen(Vector4.LerpUnclamped(time, newTime, lerp)) > maxTolerance);
+            }
+            time = newTime;
+            timeFactor = newTimeFactor;
+        }
+        Vector4 finalTime = frame.CoordToFrame(target.spaceTimePos - thisObj.spaceTimePos);
+        float newLerp = InverseLerp(0f, timeFactor, finalTime.w + ((Vector3)finalTime).magnitude);
+        return (Mathf.LerpUnclamped(time.w, finalTime.w, newLerp), Tetrad.Minkowskian.absLen(Vector4.LerpUnclamped(time, finalTime, newLerp)) > maxTolerance);
+    }
     Vector4 NewtonianGravAndRepulsion(Vector3 del)
     {
         float constant = 1f / (.1f + maxTolerance * maxTolerance) - .5f / Mathf.Max(0.007f, maxTolerance * maxTolerance * maxTolerance - 0.1f);
@@ -64,7 +86,6 @@ public class GlobalUpdate : MonoBehaviour
             return Vector4.zero;
         return Vector3.Dot(del.normalized, vel) / del.sqrMagnitude * del * 0.7f;
     }
-    
     float InverseLerp(float v, float min, float max) => (v - min) * Mathf.Sign(max - min) / Mathf.Max(Mathf.Abs(max-min), 0.000001f);
     void LoopOverAll()
     {
@@ -98,13 +119,11 @@ public class GlobalUpdate : MonoBehaviour
     {
         if (global.paused)
             return;
-        if (doneRelaxing)
-            LoopOverAll();
+        LoopOverAll();
         if (frameCount > 20)
         {
             objs = FindObjectsOfType<Object>();
             frameCount = 0;
-            doneRelaxing = true;
         }
         frameCount++;
     }
