@@ -79,6 +79,12 @@ public class FLRW : Spacetime
 
         return new Vector4(rad, theta, phi, spaceTimeVel.w);
     }
+    public override Vector4 DelPositionCoords(Vector4 del)
+    {
+        if (curvature == 0)
+            return base.DelPositionCoords(del);
+        return new Vector4(del.x, del.y, (del.z + Mathf.PI * 101f) % (Mathf.PI * 2f) - Mathf.PI, del.w);
+    }
     public override Vector4 FromCoordSystem(Vector4 coordSpace)
     {
         if (curvature == 0)

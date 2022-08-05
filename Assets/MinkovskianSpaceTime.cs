@@ -23,6 +23,7 @@ public abstract class Spacetime : MonoBehaviour
         }
     }
     public abstract Vector4 ToCoordSystem(Vector4 spaceTime);
+    public virtual Vector4 DelPositionCoords(Vector4 del) => del;
     public abstract Vector4 ToCoordSystemVelocity(Vector4 spaceTimeVel, Vector4 cartesian);
     public abstract Metric GetMetric(Vector4 spaceTime);
     public abstract Vector4 FromCoordSystem(Vector4 coordSpace);

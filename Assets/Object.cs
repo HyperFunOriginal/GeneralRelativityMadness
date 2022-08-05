@@ -23,6 +23,7 @@ public class Object : MonoBehaviour
     internal float properTimeStep;
     public bool lightlike;
     internal float properTimeClock;
+    Vector3 lastPosition;
     int frameCount = 0;
     int infracCount = 0;
 
@@ -66,6 +67,7 @@ public class Object : MonoBehaviour
         spaceTimePos.z = truePosition.z;
         currentSpace = global.GetMetric(spaceTimePos);
         worldLine = new WorldLine();
+        worldLine.Append(spaceTimePos - new Vector4(0, 0, 0, 1f), spacetimeVel);
         worldLine.Append(spaceTimePos, spacetimeVel);
         infracCount = 0;
     }
@@ -115,9 +117,10 @@ public class Object : MonoBehaviour
             spacetimeVel.z *= speedMul;
         }
 
-        if (frameCount > 8)
+        if (currentSpace.absLen(lastPosition - (Vector3)spaceTimePos) > 1.5f && frameCount > 15)
         {
-            frameCount = Random.Range(-2, 2);
+            frameCount = 0;
+            lastPosition = spaceTimePos;
             worldLine.Append(spaceTimePos, spacetimeVel);
         }
         frameCount++;
@@ -220,6 +223,7 @@ public struct WorldLine
 {
     public List<Vector4> positions;
     public List<Vector4> velocities;
+    public const int maxNodeCount = 96;
 
     public void Append(Vector4 position, Vector4 velocity)
     {
@@ -231,8 +235,8 @@ public struct WorldLine
         velocities.Add(velocity);
         if (positions.Count > 128)
         {
-            positions.RemoveRange(0, positions.Count - 128);
-            velocities.RemoveRange(0, velocities.Count - 128);
+            positions.RemoveRange(0, positions.Count - maxNodeCount);
+            velocities.RemoveRange(0, velocities.Count - maxNodeCount);
         }
     }
 }
@@ -242,7 +246,7 @@ public struct WorldLine
 public struct Tetrad
 {
     public Vector4[] compCoordBasis;
-    Matrix.NxNMatrix invMatrix;
+    internal Matrix.NxNMatrix invMatrix;
 
     public static Metric Minkowskian => new Metric()
     {
