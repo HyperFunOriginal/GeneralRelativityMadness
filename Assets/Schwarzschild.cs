@@ -6,45 +6,6 @@ public class Schwarzschild : Spacetime
 {
     public float schwarzschildRad;
     public GameObject blackholeDisp;
-    //public override Metric GetMetric(Vector4 spaceTime)
-    //{
-    //    return new Metric()
-    //    {
-    //        components = new float[4, 4] { { 1f - schwarzschildRad / spaceTime.x, 0f, 0f, 0f },
-    //                                       { 0f, -1f / (1f - schwarzschildRad / spaceTime.x), 0f, 0f },
-    //                                       { 0f, 0f, -spaceTime.x * spaceTime.x, 0f },
-    //                                       { 0f, 0f, 0f, -Mathf.Pow(Mathf.Sin(spaceTime.y) * spaceTime.x, 2) } }
-    //    };
-    //}
-    //public override Vector4 ToCoordSystem(Vector4 spaceTime)
-    //{
-    //    Vector3 space = spaceTime;
-    //    float rad = space.magnitude;
-    //    float theta = Mathf.Acos(space.normalized.y);
-    //    float phi = Mathf.Atan2(space.z, space.x);
-    //    return new Vector4(rad, theta, phi, spaceTime.w);
-    //}
-    //public override Vector4 ToCoordSystemVelocity(Vector4 spaceTimeVel, Vector3 cartesian)
-    //{
-    //    Vector3 spaceVel = spaceTimeVel;
-    //    Vector3 perp = Vector3.Cross(cartesian, Vector3.up).normalized;
-    //    float rad = Vector3.Dot(spaceVel, cartesian.normalized);
-    //    float phi = Vector3.Dot(spaceVel, perp) / cartesian.magnitude;
-    //    float theta = Vector3.Dot(spaceVel, Vector3.Cross(cartesian, perp)) / cartesian.sqrMagnitude;
-
-    //    return new Vector4(rad, theta, phi, spaceTimeVel.w);
-    //}
-    //public override Vector4 FromCoordSystem(Vector4 coordSpace)
-    //{
-    //    Vector3 space = new Vector3(Mathf.Cos(coordSpace.z) * Mathf.Sin(coordSpace.y), Mathf.Cos(coordSpace.y), Mathf.Sin(coordSpace.z) * Mathf.Sin(coordSpace.y)) * coordSpace.x;
-    //    return new Vector4(space.x, space.y, space.z, coordSpace.w);
-    //}
-    //private void Update()
-    //{
-    //    if (blackholeDisp == null)
-    //        return;
-    //    blackholeDisp.transform.localScale = Vector3.one * schwarzschildRad * 2f;
-    //}
     public override Metric GetMetric(Vector4 spaceTime)
     {
         return new Metric()
