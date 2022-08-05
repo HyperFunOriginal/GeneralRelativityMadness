@@ -254,7 +254,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &104332046
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -322,7 +321,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 104332043}
   m_LocalRotation: {x: -0, y: -0.56905985, z: -0, w: 0.82229614}
-  m_LocalPosition: {x: 1.0950911, y: 1.39, z: 4.6992664}
+  m_LocalPosition: {x: 1.24, y: 0.31, z: 4.6992664}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -462,7 +461,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &217494440
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -670,7 +668,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &228741897
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -878,7 +875,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &584217459
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1086,7 +1082,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &665959645
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1154,7 +1149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665959642}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4025461, y: 0.27, z: 5.6999993}
+  m_LocalPosition: {x: 0.4025461, y: 0.27, z: 5.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1209,7 +1204,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
   photon: {fileID: 8326282075346207989, guid: 38989406a3efdf546871b9796756b2a2, type: 3}
   strength: 1.24
   spread: 1.6
@@ -1541,7 +1535,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &748763994
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1609,7 +1602,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 748763991}
   m_LocalRotation: {x: -0, y: -0.56905985, z: -0, w: 0.82229614}
-  m_LocalPosition: {x: -0.2899993, y: 1.66, z: 5.220732}
+  m_LocalPosition: {x: -0.1450904, y: 0.5799999, z: 5.220732}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1749,7 +1742,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &763056376
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1957,7 +1949,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &1295359575
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2025,7 +2016,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1295359572}
   m_LocalRotation: {x: 0.12648165, y: -0.8660099, z: 0.39771953, w: 0.2754061}
-  m_LocalPosition: {x: 0.36936682, y: -0.09623015, z: 16.18}
+  m_LocalPosition: {x: 0.36936682, y: 0.31, z: 16.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2165,7 +2156,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &1353169062
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2233,7 +2223,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1353169059}
   m_LocalRotation: {x: 0.12648165, y: -0.8660099, z: 0.39771953, w: 0.2754061}
-  m_LocalPosition: {x: 1.0447354, y: 0.8504452, z: 17.134457}
+  m_LocalPosition: {x: 1.0447354, y: 0.8504452, z: 16.345592}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2464,7 +2454,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &1503025291
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2568,6 +2557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f42cdb4fb3ad344a1ea069b36116be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  banParadoxes: 1
   tickmark: {fileID: 0}
   speedOfLight: 30
   timestep: 1
@@ -2735,7 +2725,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &1592356211
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2943,7 +2932,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &1703572864
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3151,7 +3139,6 @@ MonoBehaviour:
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
   lightlike: 0
-  acceleration: []
 --- !u!135 &1888461659
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3219,7 +3206,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1888461656}
   m_LocalRotation: {x: 0.33033174, y: -0.8688389, z: 0.25506747, w: -0.2663465}
-  m_LocalPosition: {x: -0.31, y: 1.3926919, z: 16.418865}
+  m_LocalPosition: {x: -0.31, y: 1.3926919, z: 15.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
