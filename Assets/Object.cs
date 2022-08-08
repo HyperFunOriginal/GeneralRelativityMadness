@@ -175,7 +175,7 @@ public class Object : MonoBehaviour
                     newSpacetimeVelCpy[alpha] -= localChristoffel.components[alpha, mu, nu] * newSpacetimeVel[mu] * newSpacetimeVel[nu] * properTimeStep;
         spacetimeVel = new Vector4(newSpacetimeVelCpy[1], newSpacetimeVelCpy[2], newSpacetimeVelCpy[3], newSpacetimeVelCpy[0]);
     }
-    void Update()
+    internal virtual void Update()
     {
         if (global.paused)
             return;
