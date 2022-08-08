@@ -1944,7 +1944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111d4cf2080334b4da5004fa74a51a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: 0, y: 0, z: -50, w: 25}
+  spacetimeVel: {x: 0, y: 0, z: -20, w: 25}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
@@ -2151,7 +2151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111d4cf2080334b4da5004fa74a51a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: 0, y: 0, z: -50, w: 25}
+  spacetimeVel: {x: 0, y: 0, z: -20, w: 25}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
@@ -2449,7 +2449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111d4cf2080334b4da5004fa74a51a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: 0, y: 0, z: -50, w: 25}
+  spacetimeVel: {x: 0, y: 0, z: -20, w: 25}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
@@ -3134,7 +3134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111d4cf2080334b4da5004fa74a51a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: 0, y: 0, z: -50, w: 25}
+  spacetimeVel: {x: 0, y: 0, z: -20, w: 25}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0

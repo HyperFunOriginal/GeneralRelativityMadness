@@ -71,7 +71,7 @@ public class Object : MonoBehaviour
         worldLine.Append(spaceTimePos, spacetimeVel);
         infracCount = 0;
     }
-    void TempSpeed(Metric m)
+    void TempSpeedMassive(Metric m)
     {
         float[] newSpacetimeVel = new float[4] { spacetimeVel.w, spacetimeVel.x, spacetimeVel.y, spacetimeVel.z };
         if (m.components[0,0] == 0)
@@ -94,6 +94,38 @@ public class Object : MonoBehaviour
             for (int j = 1; j < 4; j++)
                 c += m.components[i, j] * newSpacetimeVel[i] * newSpacetimeVel[j];
         spacetimeVel.w = Mathf.Abs((-b + Mathf.Sqrt(Mathf.Max(b * b - 4 * m.components[0, 0] * c, 0))) / (2f * m.components[0, 0]));
+    }
+    void TempSpeedNull(Metric m)
+    {
+        float[] newSpacetimeVel = new float[4] { spacetimeVel.w, spacetimeVel.x, spacetimeVel.y, spacetimeVel.z };
+        if (m.components[0,0] == 0)
+        {
+            float gr = 0f;
+            for (int i = 1; i < 4; i++)
+                gr += 2f * m.components[0, i] * newSpacetimeVel[i];
+            float cn = 0f;
+            for (int i = 1; i < 4; i++)
+                for (int j = 1; j < 4; j++)
+                    cn += m.components[i, j] * newSpacetimeVel[i] * newSpacetimeVel[j];
+            float factor2 = -cn / gr;
+            spacetimeVel.w = 1f;
+            spacetimeVel.x /= factor2;
+            spacetimeVel.y /= factor2;
+            spacetimeVel.z /= factor2;
+            return;
+        }
+        float b = 0f;
+        for (int i = 1; i < 4; i++)
+            b += 2f * m.components[0, i] * newSpacetimeVel[i];
+        float c = 0f;
+        for (int i = 1; i < 4; i++)
+            for (int j = 1; j < 4; j++)
+                c += m.components[i, j] * newSpacetimeVel[i] * newSpacetimeVel[j];
+        float factor = Mathf.Abs((-b + Mathf.Sqrt(Mathf.Max(b * b - 4 * m.components[0, 0] * c, 0))) / (2f * m.components[0, 0]));
+        spacetimeVel.w = 1f;
+        spacetimeVel.x /= factor;
+        spacetimeVel.y /= factor;
+        spacetimeVel.z /= factor;
     }
     public RicciTensors GetCurvatureAround()
     {
@@ -122,12 +154,9 @@ public class Object : MonoBehaviour
     bool Sanity()
     {
         if (lightlike)
-        {
-            float speedMul = Mathf.Min(10f, 5000f / ((Vector3)spacetimeVel).magnitude);
-            spacetimeVel.x *= speedMul;
-            spacetimeVel.y *= speedMul;
-            spacetimeVel.z *= speedMul;
-        }
+            TempSpeedNull(currentSpace);
+        else
+            TempSpeedMassive(currentSpace);
 
         if (currentSpace.absLen(lastPosition - (Vector3)spaceTimePos) > 1.5f && frameCount > 15)
         {
@@ -137,7 +166,6 @@ public class Object : MonoBehaviour
         }
         frameCount++;
 
-        TempSpeed(currentSpace);
         if (global.banParadoxes && currentSpace.sqLength(spacetimeVel) < 0f && !lightlike)
         {
             infracCount++;
@@ -175,7 +203,7 @@ public class Object : MonoBehaviour
                     newSpacetimeVelCpy[alpha] -= localChristoffel.components[alpha, mu, nu] * newSpacetimeVel[mu] * newSpacetimeVel[nu] * properTimeStep;
         spacetimeVel = new Vector4(newSpacetimeVelCpy[1], newSpacetimeVelCpy[2], newSpacetimeVelCpy[3], newSpacetimeVelCpy[0]);
     }
-    internal virtual void Update()
+    void Update()
     {
         if (global.paused)
             return;
@@ -277,6 +305,13 @@ public struct Tetrad
     public Tetrad(Metric m, Vector4 timeBasis, bool generateInverse = true)
     {
         compCoordBasis = new Vector4[4];
+        if (m.absLen(timeBasis) < 0.00001f)
+        {
+            for (int i = 0; i < 4; i++)
+                compCoordBasis[i] = timeBasis;
+            invMatrix = new Matrix.NxNMatrix(4);
+            return;
+        }
         compCoordBasis[0] = timeBasis / m.absLen(timeBasis);
         Vector4 xBasis = (Vector4)Vector3.right - Project(Vector3.right, timeBasis, m);
         Vector4 yBasis = (Vector4)Vector3.up - Project(Vector3.up, timeBasis, m);
