@@ -28,7 +28,7 @@ public class MisnerSpace : Spacetime
     }
     public override Vector4 DelPositionCoords(Vector4 del)
     {
-        return new Vector4((del.x + 120f) % 4f, del.y, del.z, del.w);
+        return new Vector4((del.x + 128f) % 8f, del.y, del.z, del.w);
     }
     public override Vector4 ToCoordSystemVelocity(Vector4 spaceTimeVel, Vector4 cartesian)
     {
@@ -50,12 +50,16 @@ public class MisnerSpace : Spacetime
         //float f = 2f * Mathf.Sqrt(Mathf.Abs(coordSpace.w));
         //coordSpace.w = (float)(f * System.Math.Cosh(coordSpace.x / 2f));
         //coordSpace.x = (float)(f * System.Math.Sinh(coordSpace.x / 2f));
+        float f = coordSpace.w;
+        coordSpace.w = coordSpace.y;
+        coordSpace.y = f / 3f;
         return coordSpace;
     }
     public override Vector3 FromCoordSystemCart(Vector4 coordSpace)
     {
         //float f = 2f * Mathf.Sqrt(Mathf.Abs(coordSpace.w));
         //coordSpace.x = (float)(f * System.Math.Sinh(coordSpace.x / 2f));
+        coordSpace.y = coordSpace.w / 3f;
         return coordSpace;
     }
 }

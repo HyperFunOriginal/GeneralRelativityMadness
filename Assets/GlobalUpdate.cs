@@ -31,7 +31,7 @@ public class GlobalUpdate : MonoBehaviour
         Vector4 time = frame.CoordToFrame(global.DelPositionCoords(target.worldLine.positions[0] - thisObj.spaceTimePos));
         Vector4 v1 = frame.CoordToFrame(target.worldLine.velocities[0] - thisObj.spacetimeVel);
         int maximum = target.worldLine.positions.Count;
-        for (int i = 1; i < maximum; i += (maximum - i) / 16 + 1)
+        for (int i = 1; i < maximum; i += (maximum - i) / 12 + 1)
         {
             Vector4 newTime = frame.CoordToFrame(global.DelPositionCoords(target.worldLine.positions[i] - thisObj.spaceTimePos));
             Vector4 v2 = frame.CoordToFrame(target.worldLine.velocities[i] - thisObj.spacetimeVel);
@@ -51,8 +51,8 @@ public class GlobalUpdate : MonoBehaviour
     //Template Forces
     Vector4 NewtonianGravAndRepulsion(Vector3 del)
     {
-        float constant = 1f / (.1f + maxTolerance * maxTolerance) - .5f / Mathf.Max(0.007f, maxTolerance * maxTolerance * maxTolerance - 0.1f);
-        return del * (1f / (.1f + del.sqrMagnitude) - constant - .5f / Mathf.Max(0.007f, del.sqrMagnitude * del.magnitude - 0.1f)) * 3f;
+        float constant = 1f / (.1f + maxTolerance * maxTolerance * maxTolerance) - .5f / Mathf.Max(0.007f, maxTolerance * maxTolerance * maxTolerance * maxTolerance - 0.1f);
+        return del * (1f / (.1f + del.sqrMagnitude * del.magnitude) - constant - .5f / Mathf.Max(0.007f, del.sqrMagnitude * del.sqrMagnitude - 0.1f)) * 5f;
     }
     Vector4 NewtonianGravAndRepulsionFlat(Vector3 del)
     {
