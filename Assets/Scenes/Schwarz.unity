@@ -444,13 +444,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686016252}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -86, y: 2.6, z: -56.1}
+  m_LocalRotation: {x: 0, y: 0.3420201, z: 0, w: 0.9396927}
+  m_LocalPosition: {x: -20.4, y: 2.6, z: -56.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 40, z: 0}
 --- !u!114 &686016254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,7 +463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e5a7dc9a3b61147810cd602086c0bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacetimeVel: {x: 16.3, y: 0, z: 0, w: 0}
+  spacetimeVel: {x: 12, y: 0, z: 0, w: 0}
   spacetimeAcc: {x: 0, y: 0, z: 0, w: 0}
   spaceTimePos: {x: 0, y: 0, z: 0, w: 0}
   properTime: 0
@@ -694,6 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1894316539fb19346970bbda3c844ea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  banParadoxes: 1
   tickmark: {fileID: 6243661046912878654, guid: 9e1131c83582864489f647cd18e20fae,
     type: 3}
   speedOfLight: 30

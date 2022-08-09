@@ -42,12 +42,8 @@ public class LightEmitter : Object
 
             if (!global.paused)
             {
-                Object o = photon.GetComponent<Object>();
-                o.spacetimeVel = transform.rotation * (Random.insideUnitSphere + Vector3.forward * 2f / spread) * 1000f;
-                o.spacetimeVel.w = 30000f;
-                o.spaceTimePos = spaceTimePos;
-                GameObject g = Instantiate(photon.gameObject, transform.position, Quaternion.identity);
-                Destroy(g, Mathf.Clamp(Random.Range(.05f, .5f) / (strength * properTimeStep), 1f, 30f));
+                Object g = Instantiate(photon.GetComponent<Object>(), spaceTimePos, transform.rotation * (Random.insideUnitSphere + Vector3.forward * 2f / spread).normalized, Quaternion.identity);
+                Destroy(g.gameObject, Mathf.Clamp(Random.Range(.05f, .5f) / (strength * properTimeStep), 1f, 30f));
             }
         }
     }

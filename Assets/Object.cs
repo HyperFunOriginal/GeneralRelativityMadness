@@ -33,16 +33,31 @@ public class Object : MonoBehaviour
     internal Spacetime global;
     public Tetrad CurrFrame => new Tetrad(currentSpace, spacetimeVel);
 
+    /// <summary>
+    /// Instantiates an object GameObject.
+    /// </summary>
+    /// <param name="a">The Object.</param>
+    /// <param name="spacetimePos">Coordinate Position</param>
+    /// <param name="spacetimeVel">Cartesian Velocity</param>
+    /// <param name="rotation">Rotation</param>
+    /// <returns></returns>
+    public static Object Instantiate(Object a, Vector4 spacetimePos, Vector4 spacetimeVel, Quaternion rotation)
+    {
+        Object newObject = Instantiate(a.gameObject, GetSpaceTime.spaceTime.FromCoordSystemCart(spacetimePos), rotation).GetComponent<Object>();
+        newObject.spaceTimePos = spacetimePos;
+        newObject.spacetimeVel = spacetimeVel;
+        return newObject;
+    }
     private void OnDrawGizmosSelected()
     {
         if (global == null || currentSpace.components == null)
             return;
         Tetrad basis = new Tetrad(currentSpace, spacetimeVel, false);
         Vector4 currPos = global.FromCoordSystem(spaceTimePos);
-        Vector4 wBasis = (global.FromCoordSystem(spaceTimePos + basis.compCoordBasis[0] * .05f) - currPos) * 200f;
-        Vector4 xBasis = (global.FromCoordSystem(spaceTimePos + basis.compCoordBasis[1] * .05f) - currPos) * 200f;
-        Vector4 yBasis = (global.FromCoordSystem(spaceTimePos + basis.compCoordBasis[2] * .05f) - currPos) * 200f;
-        Vector4 zBasis = (global.FromCoordSystem(spaceTimePos + basis.compCoordBasis[3] * .05f) - currPos) * 200f;
+        Vector4 wBasis = (global.FromCoordSystem(spaceTimePos + basis.compCoordBasis[0] / (basis.compCoordBasis[0].magnitude + 0.1f) * .05f) - currPos) * 200f * (basis.compCoordBasis[0].magnitude + 0.1f);
+        Vector4 xBasis = (global.FromCoordSystem(spaceTimePos + basis.compCoordBasis[1] / (basis.compCoordBasis[1].magnitude + 0.1f) * .05f) - currPos) * 200f * (basis.compCoordBasis[1].magnitude + 0.1f);
+        Vector4 yBasis = (global.FromCoordSystem(spaceTimePos + basis.compCoordBasis[2] / (basis.compCoordBasis[2].magnitude + 0.1f) * .05f) - currPos) * 200f * (basis.compCoordBasis[2].magnitude + 0.1f);
+        Vector4 zBasis = (global.FromCoordSystem(spaceTimePos + basis.compCoordBasis[3] / (basis.compCoordBasis[3].magnitude + 0.1f) * .05f) - currPos) * 200f * (basis.compCoordBasis[3].magnitude + 0.1f);
 
         Gizmos.color = Color.HSVToRGB(Mathf.Abs(wBasis.w / global.speedOfLight + 50f) % 1f, .6f, .8f);
         Gizmos.DrawRay(transform.position - (Vector3)wBasis, 2f * wBasis);
@@ -153,11 +168,6 @@ public class Object : MonoBehaviour
     }
     bool Sanity()
     {
-        if (lightlike)
-            TempSpeedNull(currentSpace);
-        else
-            TempSpeedMassive(currentSpace);
-
         if (currentSpace.absLen(lastPosition - (Vector3)spaceTimePos) > 1.5f && frameCount > 15)
         {
             frameCount = 0;
@@ -209,6 +219,8 @@ public class Object : MonoBehaviour
             return;
         spacetimeVel += spacetimeAcc * properTimeStep;
         spacetimeAcc = Vector4.zero;
+        TempSpeed();
+
         bool insane = Sanity();
         spaceTimePos = global.DelPositionCoords(spaceTimePos + spacetimeVel * properTimeStep);
         if (!lightlike)
@@ -229,11 +241,20 @@ public class Object : MonoBehaviour
         currentSpace = global.GetMetric(spaceTimePos);
         if (Mathf.Abs(currentSpace.components[0, 0] - oldg00) > 1f) // Singularity
         {
+            Debug.LogWarning("Object hit a deadend in spacetime, or at least had hit a sharp corner. R.I.P.");
             Destroy(gameObject, 5f);
             enabled = false;
             return;
         }
         GeodesicUpdate();
+        TempSpeed();
+    }
+    void TempSpeed()
+    {
+        if (lightlike)
+            TempSpeedNull(currentSpace);
+        else
+            TempSpeedMassive(currentSpace);
     }
 }
 /// <summary>
@@ -305,7 +326,7 @@ public struct Tetrad
     public Tetrad(Metric m, Vector4 timeBasis, bool generateInverse = true)
     {
         compCoordBasis = new Vector4[4];
-        if (m.absLen(timeBasis) < 0.00001f)
+        if (m.absLen(timeBasis) < 0.0004f)
         {
             for (int i = 0; i < 4; i++)
                 compCoordBasis[i] = timeBasis;

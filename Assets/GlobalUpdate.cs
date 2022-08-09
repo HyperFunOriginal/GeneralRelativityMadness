@@ -11,7 +11,9 @@ public class GlobalUpdate : MonoBehaviour
     int frameCount = 0;
     bool doneRelaxing;
     public Func<Vector3, Vector4> DistanceForce;
+    public Func<Vector3, Vector4> LightDistanceForce;
     public Func<Vector3, Vector4, Vector4> VelocityForce;
+    public Func<Vector3, Vector4, Vector4> LightVelocityForce;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,8 @@ public class GlobalUpdate : MonoBehaviour
         objs = FindObjectsOfType<Object>();
         DistanceForce = NewtonianGravAndRepulsion;
         VelocityForce = Damping;
+        LightVelocityForce = Null;
+        LightDistanceForce = NewtonianReflection;
         doneRelaxing = false;
         if (global is MinkovskianSpaceTime)
         {
@@ -49,6 +53,10 @@ public class GlobalUpdate : MonoBehaviour
     }
     
     //Template Forces
+    Vector4 NewtonianReflection(Vector3 del)
+    {
+        return -del * Mathf.Max(0f, .5f / del.sqrMagnitude - 1f);
+    }
     Vector4 NewtonianGravAndRepulsion(Vector3 del)
     {
         float constant = 1f / (.1f + maxTolerance * maxTolerance * maxTolerance) - .5f / Mathf.Max(0.007f, maxTolerance * maxTolerance * maxTolerance * maxTolerance - 0.1f);
@@ -58,6 +66,7 @@ public class GlobalUpdate : MonoBehaviour
     {
         return del * (1f / (del.sqrMagnitude * del.magnitude) - 1f / (del.sqrMagnitude * del.sqrMagnitude)) * 5f;
     }
+    Vector4 Null(Vector3 del, Vector4 vel) => Vector4.zero;
     Vector4 Damping(Vector3 del, Vector4 vel)
     {
         if (del.magnitude > 3f)
@@ -65,6 +74,29 @@ public class GlobalUpdate : MonoBehaviour
         return Vector3.Dot(del.normalized, vel) / del.sqrMagnitude * del * 0.7f;
     }
     
+    void ObjectObjectInteraction(Object a, Object b, Tetrad aFrame)
+    {
+        (Vector4, Vector4, bool) data = GetPositionAtSingleTime(b, a, aFrame);
+        if (data.Item3)
+            return;
+        Vector4 dist = DistanceForce.Invoke(data.Item1);
+        Vector4 vel = VelocityForce.Invoke(data.Item1, data.Item2);
+        Vector4 force = aFrame.FrameToCoord(vel + dist);
+        a.spacetimeAcc += force;
+    }
+    void ObjectLightInteraction(Object a, Object b, Tetrad aFrame)
+    {
+        Vector4 lightFramePos = aFrame.CoordToFrame(global.DelPositionCoords(b.spaceTimePos - a.spaceTimePos));
+        Vector4 lightFrameVel = aFrame.CoordToFrame(b.spacetimeVel);
+        lightFramePos -= lightFrameVel * (lightFramePos.w / lightFrameVel.w);
+        if (Tetrad.Minkowskian.absLen(lightFramePos) > maxTolerance)
+            return;
+        Vector4 dist = LightDistanceForce.Invoke(lightFramePos);
+        Vector4 vel = LightVelocityForce.Invoke(lightFramePos, lightFrameVel);
+        Vector4 force = aFrame.FrameToCoord(vel + dist);
+        a.spacetimeAcc += force;
+        b.spacetimeAcc -= force;
+    }
     float InverseLerp(float v, float min, float max) => (v - min) * Mathf.Sign(max - min) / Mathf.Max(Mathf.Abs(max-min), 0.000001f);
     void LoopOverAll()
     {
@@ -82,14 +114,9 @@ public class GlobalUpdate : MonoBehaviour
                     continue;
                 Object b = objs[j];
                 if (b.lightlike)
-                    continue;
-                (Vector4, Vector4, bool) data = GetPositionAtSingleTime(b, a, curr);
-                if (data.Item3)
-                    continue;
-                Vector4 dist = DistanceForce.Invoke(data.Item1);
-                Vector4 vel = VelocityForce.Invoke(data.Item1, data.Item2);
-                Vector4 force = curr.FrameToCoord(vel + dist);
-                a.spacetimeAcc += force;
+                    ObjectLightInteraction(a, b, curr);
+                else
+                    ObjectObjectInteraction(a, b, curr);
             }
         }
     }
