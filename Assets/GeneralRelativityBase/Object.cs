@@ -108,7 +108,7 @@ public class Object : MonoBehaviour
         for (int i = 1; i < 4; i++)
             for (int j = 1; j < 4; j++)
                 c += m.components[i, j] * newSpacetimeVel[i] * newSpacetimeVel[j];
-        spacetimeVel.w = Mathf.Abs((-b + Mathf.Sqrt(Mathf.Max(b * b - 4 * m.components[0, 0] * c, 0))) / (2f * m.components[0, 0]));
+        spacetimeVel.w = (-b + Mathf.Sqrt(Mathf.Max(b * b - 4 * m.components[0, 0] * c, 0))) / (2f * m.components[0, 0]);
     }
     void TempSpeedNull(Metric m)
     {
@@ -123,10 +123,12 @@ public class Object : MonoBehaviour
                 for (int j = 1; j < 4; j++)
                     cn += m.components[i, j] * newSpacetimeVel[i] * newSpacetimeVel[j];
             float factor2 = -cn / gr;
-            spacetimeVel.w = 1f;
-            spacetimeVel.x /= factor2;
-            spacetimeVel.y /= factor2;
-            spacetimeVel.z /= factor2;
+            float sign = Mathf.Sign(-cn / gr);
+
+            spacetimeVel.w = sign;
+            spacetimeVel.x /= factor2 * sign;
+            spacetimeVel.y /= factor2 * sign;
+            spacetimeVel.z /= factor2 * sign;
             return;
         }
         float b = 0f;
@@ -136,7 +138,7 @@ public class Object : MonoBehaviour
         for (int i = 1; i < 4; i++)
             for (int j = 1; j < 4; j++)
                 c += m.components[i, j] * newSpacetimeVel[i] * newSpacetimeVel[j];
-        float factor = Mathf.Abs((-b + Mathf.Sqrt(Mathf.Max(b * b - 4 * m.components[0, 0] * c, 0))) / (2f * m.components[0, 0]));
+        float factor = (-b + Mathf.Sqrt(Mathf.Max(b * b - 4 * m.components[0, 0] * c, 0))) / (2f * m.components[0, 0]);
         spacetimeVel.w = 1f;
         spacetimeVel.x /= factor;
         spacetimeVel.y /= factor;
@@ -179,13 +181,16 @@ public class Object : MonoBehaviour
     }
     bool Sanity()
     {
-        if (currentSpace.absLen(lastPosition - (Vector3)spaceTimePos) > 1.5f && frameCount > 15)
+        if (spaceTimePos.w > worldLine.latestTime)
         {
-            frameCount = 0;
-            lastPosition = spaceTimePos;
-            worldLine.Append(spaceTimePos, spacetimeVel);
+            if (currentSpace.absLen(lastPosition - (Vector3)spaceTimePos) > 1.5f && frameCount > 15)
+            {
+                frameCount = 0;
+                lastPosition = spaceTimePos;
+                worldLine.Append(spaceTimePos, spacetimeVel);
+            }
+            frameCount++;
         }
-        frameCount++;
 
         if (global.banParadoxes && currentSpace.sqLength(spacetimeVel) < 0f && !lightlike)
         {
@@ -295,6 +300,7 @@ public struct WorldLine
 {
     public List<Vector4> positions;
     public List<Vector4> velocities;
+    public float latestTime;
     public const int maxNodeCount = 96;
 
     public void Append(Vector4 position, Vector4 velocity)
@@ -305,6 +311,7 @@ public struct WorldLine
             velocities = new List<Vector4>();
         positions.Add(position);
         velocities.Add(velocity);
+        latestTime = position.w;
         if (positions.Count > 128)
         {
             positions.RemoveRange(0, positions.Count - maxNodeCount);

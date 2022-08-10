@@ -32,7 +32,7 @@ public class LightEmitter : Object
     {
         while (true)
         {
-            for (int i = 0; i < 2f / (strength * properTimeStep); i++)
+            for (float i = 0; i < 2f / strength; i += properTimeStep)
             {
                 yield return new WaitForEndOfFrame();
 
@@ -42,7 +42,7 @@ public class LightEmitter : Object
 
             if (!global.paused)
             {
-                Object g = Instantiate(photon.GetComponent<Object>(), spaceTimePos, transform.rotation * (Random.insideUnitSphere + Vector3.forward * 2f / spread).normalized, Quaternion.identity);
+                Object g = Instantiate(photon.GetComponent<Object>(), spaceTimePos, transform.rotation * (Random.insideUnitSphere + Vector3.forward * 2f / spread).normalized + (Vector3)spacetimeVel / global.speedOfLight, Quaternion.identity);
                 Destroy(g.gameObject, Mathf.Clamp(Random.Range(.05f, .5f) / (strength * properTimeStep), 1f, 30f));
             }
         }

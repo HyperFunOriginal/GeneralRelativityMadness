@@ -19,6 +19,17 @@ public class MisnerSpace : Spacetime
     {
         return 0.5f * Mathf.Log((x + 1) / (1 - x));
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        for (int i = -9; i < 10; i++)
+            Gizmos.DrawLine(Vector3.left * 4f + Vector3.up * i * 2f, Vector3.right * 4f + Vector3.up * i * 2f);
+        for (int i = -4; i < 5; i++)
+            Gizmos.DrawLine(Vector3.up * 20f + Vector3.left * i, Vector3.down * 20f + Vector3.left * i);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(Vector3.left * 4f, Vector3.right * 4f);
+    }
     public override Vector4 ToCoordSystem(Vector4 spaceTime)
     {
         float oldTime = spaceTime.w;
@@ -28,7 +39,7 @@ public class MisnerSpace : Spacetime
     }
     public override Vector4 DelPositionCoords(Vector4 del)
     {
-        return new Vector4((del.x + 128f) % 8f, del.y, del.z, del.w);
+        return new Vector4((del.x + 132f) % 8f - 4f, del.y, del.z, del.w);
     }
     public override Vector4 ToCoordSystemVelocity(Vector4 spaceTimeVel, Vector4 cartesian)
     {
