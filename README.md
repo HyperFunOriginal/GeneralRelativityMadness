@@ -1,5 +1,8 @@
 # General Relativity ~Madness~
 An implementation of G.R. into unity. Use it however you like (and give me some credit :>)
+![image](https://user-images.githubusercontent.com/56345030/183699675-7d0e6acf-9205-423e-bb7a-be9a5d86c999.png)
+
+** **
 
 ![image](https://user-images.githubusercontent.com/56345030/181906538-0eff33c6-696e-456d-b2a9-3225ead0260d.png)
   
