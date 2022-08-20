@@ -1579,7 +1579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329693b4bfd5a794091dc8e01ab78d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  banParadoxes: 0
+  banParadoxes: 1
   tickmark: {fileID: 0}
   speedOfLight: 1
   timestep: 0.02

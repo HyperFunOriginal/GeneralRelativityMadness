@@ -5725,8 +5725,11 @@ MonoBehaviour:
     type: 3}
   speedOfLight: 30
   timestep: 0.2
+  usingCoordinateSystem: 2
   schwarzschildRad: 10
+  hawkingRadiationMultiplier: 0
   blackholeDisp: {fileID: 413418669}
+  hawkingRadParticle: {fileID: 0}
 --- !u!4 &1104531485
 Transform:
   m_ObjectHideFlags: 0

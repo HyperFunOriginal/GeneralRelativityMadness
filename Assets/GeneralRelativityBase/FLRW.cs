@@ -8,6 +8,7 @@ public class FLRW : Spacetime
     public float lambda;
     public float iniExpansionRate;
     public float curvature;
+    public bool scaleSpace = true;
 
     float GetLengthScale(float time)
     {
@@ -59,10 +60,11 @@ public class FLRW : Spacetime
         Vector3 space = spaceTime;
         if (curvature == 0)
         {
-            space /= GetLengthScale(spaceTime.w);
+            if (scaleSpace)
+                space /= GetLengthScale(spaceTime.w);
             return new Vector4(space.x, space.y, space.z, spaceTime.w);
         }
-        float rad = space.magnitude / GetLengthScale(spaceTime.w);
+        float rad = space.magnitude / (scaleSpace ? GetLengthScale(spaceTime.w) : 1f);
         float theta = Mathf.Acos(space.normalized.y);
         float phi = Mathf.Atan2(space.z, space.x);
         return new Vector4(rad, theta, phi, spaceTime.w);
@@ -73,7 +75,7 @@ public class FLRW : Spacetime
             return spaceTimeVel;
         Vector3 spaceVel = spaceTimeVel;
         Vector3 perp = Vector3.Cross(cartesian, Vector3.up).normalized;
-        float rad = Vector3.Dot(spaceVel, ((Vector3)cartesian).normalized) / GetLengthScale(cartesian.w);
+        float rad = Vector3.Dot(spaceVel, ((Vector3)cartesian).normalized) / (scaleSpace ? GetLengthScale(cartesian.w) : 1f);
         float phi = Vector3.Dot(spaceVel, perp) / ((Vector3)cartesian).magnitude;
         float theta = Vector3.Dot(spaceVel, Vector3.Cross(cartesian, perp)) / ((Vector3)cartesian).sqrMagnitude;
 
@@ -91,10 +93,11 @@ public class FLRW : Spacetime
         if (curvature == 0)
         {
             Vector3 cart = coordSpace;
-            cart *= GetLengthScale(coordSpace.w);
+            if (scaleSpace)
+                cart *= GetLengthScale(coordSpace.w);
             return new Vector4(cart.x, cart.y, cart.z, coordSpace.w);
         }
-        Vector3 space = new Vector3(Mathf.Cos(coordSpace.z) * Mathf.Sin(coordSpace.y), Mathf.Cos(coordSpace.y), Mathf.Sin(coordSpace.z) * Mathf.Sin(coordSpace.y)) * coordSpace.x * GetLengthScale(coordSpace.w);
+        Vector3 space = new Vector3(Mathf.Cos(coordSpace.z) * Mathf.Sin(coordSpace.y), Mathf.Cos(coordSpace.y), Mathf.Sin(coordSpace.z) * Mathf.Sin(coordSpace.y)) * coordSpace.x * (scaleSpace ? GetLengthScale(coordSpace.w) : 1f);
         return new Vector4(space.x, space.y, space.z, coordSpace.w);
     }
     public override Vector3 FromCoordSystemCart(Vector4 coordSpace)
@@ -102,10 +105,10 @@ public class FLRW : Spacetime
         if (curvature == 0)
         {
             Vector3 cart = coordSpace;
-            return cart * GetLengthScale(coordSpace.w);
+            return cart * (scaleSpace ? GetLengthScale(coordSpace.w) : 1f);
         }
         Vector3 space = new Vector3(Mathf.Cos(coordSpace.z) * Mathf.Sin(coordSpace.y), Mathf.Cos(coordSpace.y), Mathf.Sin(coordSpace.z) * Mathf.Sin(coordSpace.y)) * coordSpace.x;
-        return new Vector3(space.x, space.y, space.z) * GetLengthScale(coordSpace.w);
+        return new Vector3(space.x, space.y, space.z) * (scaleSpace ? GetLengthScale(coordSpace.w) : 1f);
     }
 
     internal float time;
@@ -117,7 +120,7 @@ public class FLRW : Spacetime
 
     private void OnDrawGizmos()
     {
-        float s = GetLengthScale(time);
+        float s = scaleSpace ? GetLengthScale(time) : 1f;
         if (curvature > 0)
         {
             Gizmos.color = Color.yellow;
@@ -128,7 +131,7 @@ public class FLRW : Spacetime
         else
         {
             Gizmos.color = Color.blue;
-            float scale = s / Mathf.Pow(10f, Mathf.FloorToInt(Mathf.Log10(s)));
+            float scale = s / Mathf.Pow(10f, Mathf.FloorToInt(Mathf.Log10(GetLengthScale(time))));
             for (float i = -4.5f; i < 5; i++)
             {
                 Gizmos.DrawRay((Vector3.right * i * 5f - Vector3.forward * 25f) * scale, scale * Vector3.forward * 50f);

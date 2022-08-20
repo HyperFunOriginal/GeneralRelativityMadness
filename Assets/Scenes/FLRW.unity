@@ -2564,6 +2564,7 @@ MonoBehaviour:
   lambda: 4
   iniExpansionRate: 0
   curvature: 0
+  scaleSpace: 1
 --- !u!4 &1578963881
 Transform:
   m_ObjectHideFlags: 0

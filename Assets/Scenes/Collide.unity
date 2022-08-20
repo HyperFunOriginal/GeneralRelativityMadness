@@ -2166,9 +2166,10 @@ MonoBehaviour:
   tickmark: {fileID: 0}
   speedOfLight: 30
   timestep: 0.2
-  lambda: 0
+  lambda: 1
   iniExpansionRate: 0
   curvature: 0.01
+  scaleSpace: 1
 --- !u!4 &1578963881
 Transform:
   m_ObjectHideFlags: 0

@@ -13,9 +13,9 @@ public class ExampleSpacetime : Spacetime
         //Always use +--- signature to be safe, untested in -+++ signature.
         //Example çürséd mètrïc
         float x = -1f - Wave(spaceTime.w, spaceTime.z);
-        float xWrap = 1f - Mathf.Pow(Mathf.Abs(spaceTime.x * 0.2f), 8f);
-        float yWrap = 1f - Mathf.Pow(Mathf.Abs(spaceTime.y * 0.2f), 8f);
-        float zWrap = 1f - Mathf.Pow(Mathf.Abs(spaceTime.z * 0.1f), 8f);
+        float xWrap = 1f - Mathf.Pow(Mathf.Abs(spaceTime.x * 0.2f), 8f) * 0.5f;
+        float yWrap = 1f - Mathf.Pow(Mathf.Abs(spaceTime.y * 0.2f), 8f) * 0.5f;
+        float zWrap = 1f - Mathf.Pow(Mathf.Abs(spaceTime.z * 0.1f), 8f) * 0.5f;
         return new Metric()
         {
             components = new float[4, 4] { { 1f / (xWrap * yWrap * zWrap), 0f, 0f, 0f },

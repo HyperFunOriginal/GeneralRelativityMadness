@@ -252,16 +252,17 @@ public class Object : MonoBehaviour
 
         if (!insane)
             transform.position = global.FromCoordSystemCart(spaceTimePos);
-
+        
         float oldg00 = currentSpace.components[0, 0];
         currentSpace = global.GetMetric(spaceTimePos);
-        if (Mathf.Abs(currentSpace.components[0, 0] - oldg00) > 1f) // Singularity
+        if (Mathf.Abs(currentSpace.components[0, 0] - oldg00) > 1f && global.banParadoxes) // Singularity
         {
             Debug.LogWarning("Object hit a deadend in spacetime, or at least had hit a sharp corner. R.I.P.");
             Destroy(gameObject, 5f);
             enabled = false;
             return;
         }
+        
         GeodesicUpdate();
         TempSpeed();
     }
